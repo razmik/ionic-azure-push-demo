@@ -5,20 +5,38 @@
 // the 2nd parameter is an array of 'requires'
 angular.module('starter', ['ionic'])
 
-.run(function($ionicPlatform) {
-  $ionicPlatform.ready(function() {
-    if(window.cordova && window.cordova.plugins.Keyboard) {
-      // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-      // for form inputs)
-      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+    .run(function($ionicPlatform) {
+        $ionicPlatform.ready(function() {
+            if (window.cordova && window.cordova.plugins.Keyboard) {
+                // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+                // for form inputs)
+                cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
 
-      // Don't remove this line unless you know what you are doing. It stops the viewport
-      // from snapping when text inputs are focused. Ionic handles this internally for
-      // a much nicer keyboard experience.
-      cordova.plugins.Keyboard.disableScroll(true);
-    }
-    if(window.StatusBar) {
-      StatusBar.styleDefault();
-    }
-  });
-})
+                // Don't remove this line unless you know what you are doing. It stops the viewport
+                // from snapping when text inputs are focused. Ionic handles this internally for
+                // a much nicer keyboard experience.
+                cordova.plugins.Keyboard.disableScroll(true);
+            }
+            if (window.StatusBar) {
+                StatusBar.styleDefault();
+            }
+        });
+    })
+
+    .controller("appCtrl", function($scope, $window) {
+        $scope.username = '';
+        $scope.receiver = '';
+        $scope.msg = 'Hello!';
+        $scope.register = register;
+        $scope.send = send;
+
+        function register() {
+            //TODO: Register user tag with device token
+            console.log('User Registered ' + $scope.username);
+        }
+
+        function send() {
+            //TODO: Send the push notification to receiver tag
+            console.log('Notified ' + $scope.receiver);
+        }
+    });
