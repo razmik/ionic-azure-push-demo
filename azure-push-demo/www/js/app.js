@@ -31,8 +31,60 @@ angular.module('starter', ['ionic'])
         $scope.send = send;
 
         function register() {
-            //TODO: Register user tag with device token
-            console.log('User Registered ' + $scope.username);
+            var GCM_SENDER_ID = '973405917396'; // Replace with your own ID.
+            var mobileServiceClient;
+            var pushNotification;
+
+            mobileServiceClient = new WindowsAzure.MobileServiceClient(
+                "https://push-demo-azure.azure-mobile.net/",
+                "wkklmJIQauLyZCacBFhnHUJixwFlDm51");
+
+            pushNotification = PushNotification.init({
+                "android": { "senderID": GCM_SENDER_ID, "forceShow": "false" },
+                "ios": { "alert": "true", "badge": "false", "sound": "false" }
+            });
+
+
+            pushNotification.on('registration', function(data) {
+
+                // Get the native platform of the device.
+                var platform = device.platform;
+                // Get the handle returned during registration.
+                var handle = data.registrationId;
+                alert(handle);
+                // Set the device-specific message template.
+                if (device.android()) {
+                    // Template registration.
+                    var template = '{ "data" : {"message":"$(message)"}, {“badge”:”$(badge)”}}';
+                    // Register for notifications.
+
+                    mobileServiceClient.push.gcm.registerTemplate(handle,
+                        'myTemplate', template, [$scope.username])
+                        .done(registrationSuccess, registrationFailure);
+                } else if (device.ios()) {
+                    // Template registration.
+                    var template = '{"aps": {"alert": "$(message)"}}';
+                    // Register for notifications.            
+                    mobileServiceClient.push.apns.registerTemplate(handle,
+                        'myTemplate', template, null)
+                        .done(registrationSuccess, registrationFailure);
+                }
+            });
+
+            function registrationSuccess() {
+                alert('reg done');
+            }
+
+            function registrationFailure(e) {
+                alert(e);
+            }
+
+            // Handles an error event.
+            pushNotification.on('error', function(e) {
+                // Display the error message in an alert.
+                alert(e.message);
+            });
+
         }
 
         function send() {
