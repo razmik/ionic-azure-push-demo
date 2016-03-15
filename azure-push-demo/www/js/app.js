@@ -24,11 +24,12 @@ angular.module('starter', ['ionic'])
     })
 
     .controller("appCtrl", function($scope, $window) {
-        $scope.username = '';
-        $scope.receiver = '';
-        $scope.msg = 'Hello!';
-        $scope.register = register;
-        $scope.send = send;
+        var vm = this;
+        vm.username = '';
+        vm.receiver = '';
+        vm.msg = 'Hello!';
+        vm.register = register;
+        vm.send = send;
 
         function register() {
             var GCM_SENDER_ID = '973405917396'; // Replace with your own ID.
@@ -47,48 +48,55 @@ angular.module('starter', ['ionic'])
 
             pushNotification.on('registration', function(data) {
 
-                // Get the native platform of the device.
-                var platform = device.platform;
-                // Get the handle returned during registration.
                 var handle = data.registrationId;
-                alert(handle);
+
                 // Set the device-specific message template.
-                if (device.android()) {
+                if (isAndroid()) {
                     // Template registration.
                     var template = '{ "data" : {"message":"$(message)"}, {“badge”:”$(badge)”}}';
-                    // Register for notifications.
 
+                    // Register for notifications.
                     mobileServiceClient.push.gcm.registerTemplate(handle,
-                        'myTemplate', template, [$scope.username])
+                        'myTemplate', template, [vm.username])
                         .done(registrationSuccess, registrationFailure);
-                } else if (device.ios()) {
+                } else if (isIOS()) {
                     // Template registration.
                     var template = '{"aps": {"alert": "$(message)"}}';
+
                     // Register for notifications.            
                     mobileServiceClient.push.apns.registerTemplate(handle,
-                        'myTemplate', template, null)
+                        'myTemplate', template, [vm.username])
                         .done(registrationSuccess, registrationFailure);
                 }
+
+                function isIOS() {
+                    return (ionic.Platform.device().platform.match(/ios/i))
+                }
+
+                function isAndroid() {
+                    return (ionic.Platform.device().platform.match(/android/i))
+                }
+                
             });
 
             function registrationSuccess() {
-                alert('reg done');
+                console.log('Registered Successfully');
             }
 
             function registrationFailure(e) {
-                alert(e);
+                alert('Registration failure: ' + e);
             }
 
             // Handles an error event.
             pushNotification.on('error', function(e) {
                 // Display the error message in an alert.
-                alert(e.message);
+                alert('Error: ' + e.message);
             });
 
         }
 
         function send() {
             //TODO: Send the push notification to receiver tag
-            console.log('Notified ' + $scope.receiver);
+            console.log('Notified ' + vm.receiver);
         }
     });

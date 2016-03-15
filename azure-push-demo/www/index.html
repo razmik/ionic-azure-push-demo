@@ -29,7 +29,7 @@
         <ion-header-bar class="bar-stable">
             <h1 class="title">Azure Push Demo</h1>
         </ion-header-bar>
-        <ion-content ng-controller="appCtrl">
+        <ion-content ng-controller="appCtrl as vm">
             <div class="card">
                 <div class="item item-divider">
                     Register
@@ -37,9 +37,9 @@
                 <div class="item item-text-wrap">
                     <div class="list">
                         <label class="item item-input">
-                            <input type="text" placeholder="Username" ng-model="username">
+                            <input type="text" placeholder="Username" ng-model="vm.username">
                         </label>
-                        <button class="button button-full button-positive" ng-click="register()">
+                        <button class="button button-full button-positive" ng-click="vm.register()">
                             Register
                         </button>
                     </div>
@@ -52,12 +52,12 @@
                 <div class="item item-text-wrap">
                     <div class="list">
                         <label class="item item-input">
-                            <input type="text" placeholder="Receiver" ng-model="receiver">
+                            <input type="text" placeholder="Receiver" ng-model="vm.receiver">
                         </label>
                         <label class="item item-input">
-                            <input type="text" placeholder="Message" ng-model="msg">
+                            <input type="text" placeholder="Message" ng-model="vm.msg">
                         </label>
-                        <button class="button button-full button-positive" ng-click="send()">
+                        <button class="button button-full button-positive" ng-click="vm.send()">
                             Send
                         </button>
                     </div>
