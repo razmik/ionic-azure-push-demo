@@ -95,7 +95,7 @@ angular.module('starter', ['ionic'])
                 // data.image,
                 // data.additionalData
 
-                alert(("Message : " + data.message + " \r\nBadge Count: " + data.badge));
+                alert(("Message : " + data.message + " \r\nBadge Count: " + data.count));
 
             });
 
