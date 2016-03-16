@@ -53,7 +53,7 @@ angular.module('starter', ['ionic'])
                 // Set the device-specific message template.
                 if (isAndroid()) {
                     // Template registration.
-                    var template = '{ "data" : {"message":"$(message)"}, {"badge":"$(badge)"}}';
+                    var template = '{ "data" : {"message":"$(message)"}}';
 
                     // Register for notifications.
                     mobileServiceClient.push.gcm.registerTemplate(handle,
@@ -61,7 +61,7 @@ angular.module('starter', ['ionic'])
                         .done(registrationSuccess, registrationFailure);
                 } else if (isIOS()) {
                     // Template registration.
-                    var template = '{"aps": {"alert": "$(message)"}, {"badge":"$(badge)"}}';
+                    var template = '{"aps": {"alert": "$(message)"}}';
 
                     // Register for notifications.            
                     mobileServiceClient.push.apns.registerTemplate(handle,
@@ -95,11 +95,7 @@ angular.module('starter', ['ionic'])
                 // data.image,
                 // data.additionalData
 
-                navigator.notification.alert(
-                    ("Message : " + data.message + " \r\nBadge Count: " + data.badge),  
-                    function() { },
-                    'notification'      
-                );
+                alert(("Message : " + data.message + " \r\nBadge Count: " + data.badge));
 
             });
 
