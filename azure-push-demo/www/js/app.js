@@ -41,8 +41,8 @@ angular.module('starter', ['ionic'])
                 "wkklmJIQauLyZCacBFhnHUJixwFlDm51");
 
             pushNotification = PushNotification.init({
-                "android": { "senderID": GCM_SENDER_ID, "forceShow": "false" },
-                "ios": { "alert": "true", "badge": "true", "sound": "true" }
+                "android": { senderID: GCM_SENDER_ID, forceShow: "false" },
+                "ios": { alert: "true", badge: "true", sound: "true" }
             });
 
 
@@ -61,7 +61,7 @@ angular.module('starter', ['ionic'])
                         .done(registrationSuccess, registrationFailure);
                 } else if (isIOS()) {
                     // Template registration.
-                    var template = '{"aps": {"alert": "$(message)"}}';
+                    var template = '{"aps": {"alert": "$(message)",\"badge\":\"#(badge)\" }}';
 
                     // Register for notifications.            
                     mobileServiceClient.push.apns.registerTemplate(handle,
