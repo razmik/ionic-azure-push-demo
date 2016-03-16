@@ -42,7 +42,7 @@ angular.module('starter', ['ionic'])
 
             pushNotification = PushNotification.init({
                 "android": { "senderID": GCM_SENDER_ID, "forceShow": "false" },
-                "ios": { "alert": "true", "badge": "false", "sound": "false" }
+                "ios": { "alert": "true", "badge": "true", "sound": "true" }
             });
 
 
@@ -53,7 +53,7 @@ angular.module('starter', ['ionic'])
                 // Set the device-specific message template.
                 if (isAndroid()) {
                     // Template registration.
-                    var template = '{ "data" : {"message":"$(message)"}, {“badge”:”$(badge)”}}';
+                    var template = '{ "data" : {"message":"$(message)"}, {"badge":"$(badge)"}}';
 
                     // Register for notifications.
                     mobileServiceClient.push.gcm.registerTemplate(handle,
@@ -61,7 +61,7 @@ angular.module('starter', ['ionic'])
                         .done(registrationSuccess, registrationFailure);
                 } else if (isIOS()) {
                     // Template registration.
-                    var template = '{"aps": {"alert": "$(message)"}}';
+                    var template = '{"aps": {"alert": "$(message)"}, {"badge":"$(badge)"}}';
 
                     // Register for notifications.            
                     mobileServiceClient.push.apns.registerTemplate(handle,
@@ -76,16 +76,33 @@ angular.module('starter', ['ionic'])
                 function isAndroid() {
                     return (ionic.Platform.device().platform.match(/android/i))
                 }
-                
+
+                function registrationSuccess() {
+                    console.log('Registered Successfully');
+                }
+
+                function registrationFailure(e) {
+                    alert('Registration failure: ' + e);
+                }
+
             });
 
-            function registrationSuccess() {
-                console.log('Registered Successfully');
-            }
+            pushNotification.on('notification', function(data) {
+                // data.message,
+                // data.title,
+                // data.count,
+                // data.sound,
+                // data.image,
+                // data.additionalData
 
-            function registrationFailure(e) {
-                alert('Registration failure: ' + e);
-            }
+                navigator.notification.alert(
+                    ("Message : " + data.message + " \r\nBadge Count: " + data.badge),  
+                    function() { },
+                    'notification'      
+                );
+
+            });
+
 
             // Handles an error event.
             pushNotification.on('error', function(e) {
