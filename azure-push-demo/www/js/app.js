@@ -61,7 +61,7 @@ angular.module('starter', ['ionic'])
                         .done(registrationSuccess, registrationFailure);
                 } else if (isIOS()) {
                     // Template registration.
-                    var template = '{"aps": {"alert": "$(message)",\"badge\":\"#(badge)\" }}';
+                    var template = '{"aps": {"alert": "$(message)","badge":"#(badge)" }}';
 
                     // Register for notifications.            
                     mobileServiceClient.push.apns.registerTemplate(handle,
